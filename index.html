@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>武汉旅行手册 · 2026国庆</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-sub: #475569;
+      --border: #e2e8f0;
+      --accent: #2563eb;
+      --tag-warn-bg: #fef2f2;
+      --tag-warn-txt: #dc2626;
+      --tag-info-bg: #eff6ff;
+      --tag-info-txt: #1d4ed8;
+      --d1-color: #3b82f6;
+      --d2-color: #10b981;
+      --d3-color: #f59e0b;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #090d16;
+        --card-bg: #131b2e;
+        --text-main: #f1f5f9;
+        --text-sub: #94a3b8;
+        --border: #1e293b;
+        --accent: #60a5fa;
+        --tag-warn-bg: #450a0a;
+        --tag-warn-txt: #f87171;
+        --tag-info-bg: #172554;
+        --tag-info-txt: #93c5fd;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding: 16px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    header p {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 倒计时卡片 */
+    .focus-card {
+      background: linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(16,185,129,0.08) 100%);
+      border: 1.5px solid var(--accent);
+    }
+    .focus-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .focus-event {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .timer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      text-align: center;
+    }
+    .timer-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 4px;
+    }
+    .timer-val {
+      font-size: 1.3rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+    }
+    .timer-lbl {
+      font-size: 0.7rem;
+      color: var(--text-sub);
+    }
+
+    /* SVG 地图 */
+    .map-container {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      margin-top: 8px;
+    }
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* 订单清单 */
+    .order-item {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .order-item:last-child { border-bottom: none; }
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .order-meta {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+    .order-contact {
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-top: 2px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    /* 抢票与预约时间表 */
+    .booking-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .booking-row {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: rgba(37,99,235,0.02);
+    }
+    .booking-target-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .booking-target-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .booking-op-time {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+    .booking-rule {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      margin-bottom: 4px;
+    }
+    .booking-channel {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+    }
+    .booking-channel strong {
+      color: var(--text-main);
+    }
+
+    /* 逐日行程 */
+    .day-toggle-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: rgba(37,99,235,0.06);
+      border-radius: 10px;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+    .day-toggle-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .nav-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .timeline-row {
+      display: flex;
+      gap: 12px;
+      font-size: 0.9rem;
+    }
+    .timeline-time {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      width: 46px;
+      flex-shrink: 0;
+      color: var(--accent);
+      padding-top: 2px;
+    }
+    .timeline-content {
+      flex: 1;
+    }
+    .place-link {
+      color: var(--text-main);
+      font-weight: 700;
+      text-decoration: none;
+      border-bottom: 1px dotted var(--accent);
+    }
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .tag-warn { background: var(--tag-warn-bg); color: var(--tag-warn-txt); }
+    .tag-info { background: var(--tag-info-bg); color: var(--tag-info-txt); }
+
+    /* 静态清单 */
+    .static-list {
+      list-style: none;
+      font-size: 0.85rem;
+    }
+    .static-list li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 8px;
+      color: var(--text-sub);
+    }
+    .static-list li::before {
+      content: "•";
+      position: absolute;
+      left: 4px;
+      color: var(--accent);
+      font-weight: bold;
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+    .static-list li strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      padding: 16px 0 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>武汉旅行手册</h1>
+    <p>2026.10.01 – 2026.10.03 · 3天2晚离线版</p>
+  </header>
+
+  <!-- 1. 顶部「此刻关注」卡片 -->
+  <section class="card focus-card">
+    <div class="focus-badge">Next Target · 此刻关注</div>
+    <div class="focus-event" id="target-title">行程监测中...</div>
+    <div class="timer-grid">
+      <div class="timer-box">
+        <div class="timer-val" id="t-d">00</div>
+        <div class="timer-lbl">天</div>
+      </div>
+      <div class="timer-box">
+        <div class="timer-val" id="t-h">00</div>
+        <div class="timer-lbl">时</div>
+      </div>
+      <div class="timer-box">
+        <div class="timer-val" id="t-m">00</div>
+        <div class="timer-lbl">分</div>
+      </div>
+      <div class="timer-box">
+        <div class="timer-val" id="t-s">00</div>
+        <div class="timer-lbl">秒</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 行程总览地图 (手绘感SVG) -->
+  <section class="card">
+    <div class="section-title">全域动线骨架图</div>
+    <div class="map-container">
+      <svg viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="sketch" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" />
+          </filter>
+        </defs>
+        
+        <!-- 长江水系手绘带 -->
+        <path d="M 0,160 Q 140,150 210,120 T 420,70" fill="none" stroke="#93c5fd" stroke-width="26" stroke-linecap="round" opacity="0.35" filter="url(#sketch)" />
+        <text x="280" y="100" fill="#60a5fa" font-size="11" font-weight="700" letter-spacing="2">长 江 (穿江桥隧)</text>
+
+        <!-- D1 蓝色路线 (老武昌) -->
+        <path d="M 120,40 L 170,180 L 180,220 L 150,210" fill="none" stroke="#3b82f6" stroke-width="3.5" stroke-dasharray="6,4" filter="url(#sketch)" />
+        
+        <!-- D2 绿色路线 (省博 -> 汉口古德寺/黎黄陂/江汉路) -->
+        <path d="M 170,180 L 320,190 L 220,50 L 190,110 L 160,130 L 170,180" fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="5,4" filter="url(#sketch)" />
+
+        <!-- D3 橙黄色路线 (大成路 -> 武大 -> 东湖 -> 武昌站) -->
+        <path d="M 170,180 L 160,230 L 300,240 L 340,210 L 180,260" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="5,4" filter="url(#sketch)" />
+
+        <!-- 汉口站 -->
+        <circle cx="120" cy="40" r="5" fill="#3b82f6" />
+        <text x="75" y="44" font-size="10" font-weight="bold" fill="currentColor">汉口站</text>
+        <text x="148" y="110" font-size="9" fill="#3b82f6">地铁2号线 35m</text>
+
+        <!-- 酒店基地 (积玉桥) -->
+        <circle cx="170" cy="180" r="6" fill="#ef4444" />
+        <text x="105" y="184" font-size="11" font-weight="bold" fill="#ef4444">积玉桥酒店</text>
+
+        <!-- 昙华林 & 黄鹤楼 & 大桥 -->
+        <circle cx="180" cy="220" r="4" fill="#3b82f6" />
+        <text x="190" y="215" font-size="9" fill="currentColor">昙华林/黄鹤楼</text>
+        <circle cx="150" cy="210" r="4" fill="#3b82f6" />
+        <text x="80" y="218" font-size="9" fill="currentColor">长江大桥</text>
+
+        <!-- 湖北省博物馆 -->
+        <circle cx="320" cy="190" r="5" fill="#10b981" />
+        <text x="330" y="194" font-size="10" font-weight="bold" fill="#10b981">省博物馆</text>
+        <text x="220" y="175" font-size="9" fill="#10b981">车程 7.5km (22m)</text>
+
+        <!-- 古德寺 -->
+        <circle cx="220" cy="50" r="4" fill="#10b981" />
+        <text x="230" y="54" font-size="9" fill="currentColor">古德寺</text>
+
+        <!-- 黎黄陂路 / 江汉路 -->
+        <circle cx="190" cy="110" r="4" fill="#10b981" />
+        <circle cx="160" cy="130" r="4" fill="#10b981" />
+        <text x="198" y="118" font-size="9" fill="currentColor">黎黄陂路/江汉关</text>
+
+        <!-- 武汉大学 & 东湖 -->
+        <circle cx="300" cy="240" r="4" fill="#f59e0b" />
+        <text x="308" y="248" font-size="9" fill="currentColor">武汉大学</text>
+        <circle cx="340" cy="210" r="4" fill="#f59e0b" />
+        <text x="350" y="214" font-size="9" fill="currentColor">东湖</text>
+
+        <!-- 武昌站 -->
+        <circle cx="180" cy="260" r="5" fill="#f59e0b" />
+        <text x="126" y="268" font-size="10" font-weight="bold" fill="currentColor">武昌站 (返程)</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 3. 已规划交通与住宿资产 -->
+  <section class="card">
+    <div class="section-title">规划交通与住宿</div>
+    <div class="order-item">
+      <div class="order-header">
+        <span>去程列车 · G452</span>
+        <span>10.01 07:55 - 11:35</span>
+      </div>
+      <div class="order-meta">上海虹桥站 出发 -> 汉口站 抵达 <span class="tag tag-warn">待购票</span></div>
+      <a class="order-contact" href="tel:021-12306">铁路客服：12306</a>
+    </div>
+    <div class="order-item">
+      <div class="order-header">
+        <span>住宿 · 武汉豪生Club酒店 (积玉桥店)</span>
+        <span>10.01 - 10.03 (2晚)</span>
+      </div>
+      <div class="order-meta">武昌区和平大道与积玉桥地铁站交汇处周边</div>
+      <a class="order-contact" href="https://uri.amap.com/marker?name=武汉豪生Club酒店积玉桥店">打开高德地图定位</a>
+    </div>
+    <div class="order-item">
+      <div class="order-header">
+        <span>返程列车 · D105</span>
+        <span>10.03 20:49 - 06:14(+1)</span>
+      </div>
+      <div class="order-meta">武昌站 出发 -> 上海南站 抵达 <span class="tag tag-warn">待购票</span></div>
+      <a class="order-contact" href="tel:027-12306">武汉铁路客服：027-12306</a>
+    </div>
+  </section>
+
+  <!-- 4. 关键票务与预约时刻表 -->
+  <section class="card">
+    <div class="section-title">车票与门票抢购/预约时刻表</div>
+    <div class="booking-grid">
+      <!-- 去程火车票 -->
+      <div class="booking-row">
+        <div class="booking-target-header">
+          <span class="booking-target-name">去程火车票 G452 (上海虹桥 -> 汉口)</span>
+          <span class="booking-op-time">09.17 13:45 起售</span>
+        </div>
+        <div class="booking-rule"><strong>规则：</strong>提前 15 天预售。国庆长假首日跨省高铁票极其紧俏，务必提前录入乘车人并设置起售闹钟。</div>
+        <div class="booking-channel"><strong>入口：</strong>官方 App「铁路12306」</div>
+      </div>
+
+      <!-- 返程火车票 -->
+      <div class="booking-row">
+        <div class="booking-target-header">
+          <span class="booking-target-name">返程火车票 D105 (武昌 -> 上海南)</span>
+          <span class="booking-op-time">09.19 13:15 起售</span>
+        </div>
+        <div class="booking-rule"><strong>规则：</strong>提前 15 天预售。提前在 12306 预选车次并启用候补购票策略。</div>
+        <div class="booking-channel"><strong>入口：</strong>官方 App「铁路12306」</div>
+      </div>
+
+      <!-- 湖北省博物馆 -->
+      <div class="booking-row">
+        <div class="booking-target-header">
+          <span class="booking-target-name">湖北省博物馆 (10.02 上午场)</span>
+          <span class="booking-op-time">09.27 17:18 抢票</span>
+        </div>
+        <div class="booking-rule"><strong>规则：</strong>提前 5 天放票，每日 17:18 开始。国庆门票秒空，需提前填妥同行人员身份信息。</div>
+        <div class="booking-channel"><strong>入口：</strong>微信公众号「湖北省博物馆」- 门票预约</div>
+      </div>
+
+      <!-- 古德寺 -->
+      <div class="booking-row">
+        <div class="booking-target-header">
+          <span class="booking-target-name">汉口古德寺 (10.02 下午场)</span>
+          <span class="booking-op-time">09.22 起开放，最晚 10.01 约</span>
+        </div>
+        <div class="booking-rule"><strong>规则：</strong>提前 1-10 天开放线上预约，已全面取消现场售票，必须持预约码核验入内。</div>
+        <div class="booking-channel"><strong>入口：</strong>微信公众号「汉口古德寺」- 游客预约</div>
+      </div>
+
+      <!-- 黄鹤楼公园 -->
+      <div class="booking-row">
+        <div class="booking-target-header">
+          <span class="booking-target-name">黄鹤楼公园 (10.01 傍晚场)</span>
+          <span class="booking-op-time">09.24 起开放，建议提前购</span>
+        </div>
+        <div class="booking-rule"><strong>规则：</strong>提前 7 天放票，分时段入园。节假日现场排队极长，建议提前线上出票。</div>
+        <div class="booking-channel"><strong>入口：</strong>微信公众号「黄鹤楼」/ 美团 / 携程</div>
+      </div>
+
+      <!-- 武汉大学 -->
+      <div class="booking-row">
+        <div class="booking-target-header">
+          <span class="booking-target-name">武汉大学校区 (10.03 上午)</span>
+          <span class="booking-op-time">无需预约 · 刷身份证入校</span>
+        </div>
+        <div class="booking-rule"><strong>规则：</strong>周末及法定节假日面向公众开放，08:30-17:30 凭本人二代身份证直接刷证步行入校。</div>
+        <div class="booking-channel"><strong>通道：</strong>武汉大学各校门行人通道（建议走珞珈门）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 逐日行程 -->
+  <section class="card">
+    <div class="section-title">逐日行程计划</div>
+
+    <!-- Day 1 -->
+    <div style="margin-bottom: 18px;">
+      <div class="day-toggle-bar">
+        <span class="day-toggle-title">10.01 · D1 抵达与老武昌核心</span>
+        <a class="nav-btn" href="https://uri.amap.com/navigation?from=&to=114.305,30.553,黄鹤楼&mode=car">高德导航</a>
+      </div>
+      <div class="timeline">
+        <div class="timeline-row">
+          <div class="timeline-time">11:35</div>
+          <div class="timeline-content">抵达 <a class="place-link" href="https://uri.amap.com/marker?name=汉口站">汉口站</a>，乘地铁2号线直达积玉桥站</div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">12:30</div>
+          <div class="timeline-content">入住 <a class="place-link" href="https://uri.amap.com/marker?name=武汉豪生Club酒店积玉桥店">武汉豪生Club酒店</a>，办理寄存并在周边简餐</div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">14:30</div>
+          <div class="timeline-content">游览 <a class="place-link" href="https://uri.amap.com/marker?name=昙华林">昙华林</a> 历史文化街区</div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">16:30</div>
+          <div class="timeline-content">打卡 <a class="place-link" href="https://uri.amap.com/marker?name=黄鹤楼">黄鹤楼</a> <span class="tag tag-warn">需提前购门票</span></div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">18:45</div>
+          <div class="timeline-content">步行至 <a class="place-link" href="https://uri.amap.com/marker?name=武汉长江大桥武昌桥头堡">武汉长江大桥</a> 漫步观两江灯光秀</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div style="margin-bottom: 18px;">
+      <div class="day-toggle-bar">
+        <span class="day-toggle-title">10.02 · D2 省博与汉口历史风貌</span>
+        <a class="nav-btn" href="https://uri.amap.com/navigation?from=&to=114.364,30.563,湖北省博物馆&mode=car">高德导航</a>
+      </div>
+      <div class="timeline">
+        <div class="timeline-row">
+          <div class="timeline-time">09:00</div>
+          <div class="timeline-content">参观 <a class="place-link" href="https://uri.amap.com/marker?name=湖北省博物馆">湖北省博物馆</a> <span class="tag tag-warn">09.27 17:18抢票</span>，主攻编钟与越王勾践剑</div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">12:00</div>
+          <div class="timeline-content">东湖周边午餐后乘地铁8号线单向跨江进入汉口</div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">13:30</div>
+          <div class="timeline-content">游览 <a class="place-link" href="https://uri.amap.com/marker?name=古德寺">古德寺</a> <span class="tag tag-warn">最晚10.01线上购票</span></div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">15:30</div>
+          <div class="timeline-content">漫步 <a class="place-link" href="https://uri.amap.com/marker?name=黎黄陂路">黎黄陂路</a>，打卡巴公房子与租界洋房</div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">18:00</div>
+          <div class="timeline-content">步行至 <a class="place-link" href="https://uri.amap.com/marker?name=江汉路步行街">江汉路步行街</a>、江汉关，晚餐后乘2号线回酒店</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div>
+      <div class="day-toggle-bar">
+        <span class="day-toggle-title">10.03 · D3 市井过早、武大与东湖</span>
+        <a class="nav-btn" href="https://uri.amap.com/navigation?from=&to=114.321,30.533,武昌火车站&mode=car">高德导航</a>
+      </div>
+      <div class="timeline">
+        <div class="timeline-row">
+          <div class="timeline-time">07:30</div>
+          <div class="timeline-content">前往 <a class="place-link" href="https://uri.amap.com/marker?name=大成路">大成路</a> 体验地道武昌过早市井</div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">09:30</div>
+          <div class="timeline-content">漫步 <a class="place-link" href="https://uri.amap.com/marker?name=武汉大学珞珈门">武汉大学</a> <span class="tag tag-info">刷二代身份证入校</span>，参观早期建筑与老斋舍</div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">13:30</div>
+          <div class="timeline-content">漫步骑行 <a class="place-link" href="https://uri.amap.com/marker?name=东湖听涛景区">东湖风景区</a> (听涛景区段)</div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">17:30</div>
+          <div class="timeline-content">返回积玉桥酒店取行李，周边晚餐</div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">19:15</div>
+          <div class="timeline-content">抵达 <a class="place-link" href="https://uri.amap.com/marker?name=武昌火车站">武昌站</a> 进站安检</div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">20:49</div>
+          <div class="timeline-content">乘坐 <strong>D105</strong> 次列车返程</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. 待办事项 (纯展示列表) -->
+  <section class="card">
+    <div class="section-title">行前待办事项</div>
+    <ul class="static-list">
+      <li><strong>09.17 13:45</strong>：开售去程火车票（上海虹桥 -> 汉口 G452）</li>
+      <li><strong>09.19 13:15</strong>：开售返程火车票（武昌 -> 上海南 D105）</li>
+      <li><strong>09.27 17:18</strong>：锁定湖北省博物馆 10.02 上午场门票（官方公众号卡点预约）</li>
+      <li><strong>09.28 之前</strong>：购买 10.01 黄鹤楼景区门票（避免现场排长队）</li>
+      <li><strong>10.01 之前</strong>：线上预约并购买 10.02 古德寺门票（已全面取消现场售票）</li>
+      <li><strong>随身必备</strong>：所有同行人必须随身携带<strong>实体二代身份证</strong>（进出车站及武大入校直接核验）</li>
+      <li><strong>出行准备</strong>：准备平底步行鞋（武汉日均步数预计超 1.8 万步）</li>
+    </ul>
+  </section>
+
+  <!-- 7. 实用贴士 -->
+  <section class="card">
+    <div class="section-title">实用出行贴士</div>
+    <ul class="static-list">
+      <li><strong>过江优先地铁</strong>：国庆期间长江大桥与过江隧道地面极易大面积拥堵，积玉桥与江汉路之间往返务必优先乘坐地铁2号线。</li>
+      <li><strong>省博编钟演出</strong>：如需观看曾侯乙编钟实景演奏，入馆后需第一时间在馆内自助机或服务台现场预约场次。</li>
+      <li><strong>打车下车点</strong>：节假日黄鹤楼及江汉路周边交通管制频繁，网约车建议停靠在外围地铁站旁步行进入，切勿定位在核心路口。</li>
+    </ul>
+  </section>
+
+  <footer>
+    武汉旅行手册 · 实时自动更新引擎驱动
+  </footer>
+
+  <script>
+    // 关键时间节点序列（包含校正后的起售时间）
+    const schedule = [
+      { name: "抢购 去程车票 G452", time: new Date("2026-09-17T13:45:00+08:00") },
+      { name: "抢购 返程车票 D105", time: new Date("2026-09-19T13:15:00+08:00") },
+      { name: "抢购 湖北省博物馆门票", time: new Date("2026-09-27T17:18:00+08:00") },
+      { name: "搭乘 G452 出发 (上海虹桥)", time: new Date("2026-10-01T07:55:00+08:00") },
+      { name: "抵达汉口站", time: new Date("2026-10-01T11:35:00+08:00") },
+      { name: "酒店 Check-in (积玉桥)", time: new Date("2026-10-01T12:30:00+08:00") },
+      { name: "游览昙华林", time: new Date("2026-10-01T14:30:00+08:00") },
+      { name: "打卡黄鹤楼", time: new Date("2026-10-01T16:30:00+08:00") },
+      { name: "漫步长江大桥", time: new Date("2026-10-01T18:45:00+08:00") },
+      { name: "入馆 湖北省博物馆", time: new Date("2026-10-02T09:00:00+08:00") },
+      { name: "参访古德寺", time: new Date("2026-10-02T13:30:00+08:00") },
+      { name: "漫步黎黄陂路", time: new Date("2026-10-02T15:30:00+08:00") },
+      { name: "逛江汉路步行街", time: new Date("2026-10-02T18:00:00+08:00") },
+      { name: "大成路早市过早", time: new Date("2026-10-03T07:30:00+08:00") },
+      { name: "游览武汉大学", time: new Date("2026-10-03T09:30:00+08:00") },
+      { name: "东湖绿道漫步", time: new Date("2026-10-03T13:30:00+08:00") },
+      { name: "抵达武昌站安检", time: new Date("2026-10-03T19:15:00+08:00") },
+      { name: "搭乘 D105 返程", time: new Date("2026-10-03T20:49:00+08:00") }
+    ];
+
+    function updateCountdown() {
+      const now = new Date();
+      let target = null;
+
+      for (let item of schedule) {
+        if (item.time > now) {
+          target = item;
+          break;
+        }
+      }
+
+      const titleEl = document.getElementById("target-title");
+      const dEl = document.getElementById("t-d");
+      const hEl = document.getElementById("t-h");
+      const mEl = document.getElementById("t-m");
+      const sEl = document.getElementById("t-s");
+
+      if (!target) {
+        titleEl.textContent = "行程已圆满结束";
+        dEl.textContent = "00";
+        hEl.textContent = "00";
+        mEl.textContent = "00";
+        sEl.textContent = "00";
+        return;
+      }
+
+      titleEl.textContent = target.name;
+      const diff = Math.max(0, target.time - now);
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      dEl.textContent = String(days).padStart(2, "0");
+      hEl.textContent = String(hours).padStart(2, "0");
+      mEl.textContent = String(minutes).padStart(2, "0");
+      sEl.textContent = String(seconds).padStart(2, "0");
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
