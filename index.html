@@ -1274,23 +1274,44 @@
       }
     }
 
-    function navTo(lng, lat, name) {
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      const appUri = `amapuri://viewMap?sourceApplication=trip&poiname=${encodeURIComponent(name)}&lat=${lat}&lon=${lng}&dev=0`;
-      const webUri = `https://uri.amap.com/marker?position=${lng},${lat}&name=${encodeURIComponent(name)}&coordinate=gaode&callnative=1`;
+function navTo(lng, lat, name) {
+  const u = navigator.userAgent;
+  const isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+  const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+  const encodedName = encodeURIComponent(name);
 
-      if (isMobile) {
-        const startTime = Date.now();
-        window.location.href = appUri;
-        setTimeout(() => {
-          if (Date.now() - startTime < 2000) {
-            window.location.href = webUri;
-          }
-        }, 1500);
-      } else {
-        window.open(webUri, '_blank');
+  // 1. 针对 iOS 与 Android 生成对应的高德 App 原生 Scheme
+  let appUri = '';
+  if (isIOS) {
+    // iOS 高德 App 原生标注协议
+    appUri = `iosamap://viewMap?sourceApplication=WuhanTrip&poiname=${encodedName}&lat=${lat}&lon=${lng}&dev=0`;
+  } else if (isAndroid) {
+    // Android 高德 App 原生标注协议
+    appUri = `androidamap://viewMap?sourceApplication=WuhanTrip&poiname=${encodedName}&lat=${lat}&lon=${lng}&dev=0`;
+  } else {
+    // 桌面端或其它系统
+    appUri = `https://uri.amap.com/marker?position=${lng},${lat}&name=${encodedName}&coordinate=gaode&callnative=1`;
+  }
+
+  // 2. 官方标准 Web/H5 标注页（自带唤起客户端功能）
+  const webFallback = `https://uri.amap.com/marker?position=${lng},${lat}&name=${encodedName}&coordinate=gaode&callnative=1`;
+
+  if (isIOS || isAndroid) {
+    // 尝试直接通过原生协议拉起客户端并精确定位
+    window.location.href = appUri;
+
+    // 若 1.5 秒内未唤起（未安装高德 App 或浏览器拦截 Scheme），降级打开高德官方 H5 标注
+    const openTime = Date.now();
+    setTimeout(() => {
+      if (Date.now() - openTime < 2200) {
+        window.location.href = webFallback;
       }
-    }
+    }, 1500);
+  } else {
+    // PC 浏览器直接新标签页打开
+    window.open(webFallback, '_blank');
+  }
+}
 
     // 待办事项交互与状态存储
     function toggleTodoItem(itemEl) {
